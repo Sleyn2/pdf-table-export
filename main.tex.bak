@@ -516,15 +516,11 @@ escapeinside={@*}{*@},%
 % TODO
 \chapter{Wstęp}
 
+Zarządzanie dostępnymi zasobami jest niezbędnym procesem dla dużych biznesów. Proces ten składa się z czynności takich jak, śledzenie ilości, lokalizacji i wartości towarów posiadanych przez firmę. Jest to niezbędna czynność dla utrzymania wydajności finansowej firmy oraz maksymalizacji zysków. Zważając na opisane operacje można wyszczególnić duże wyzwanie stojące przed firmami chcącymi optymalnie zarządzać swoimi zasobami. Jest nim importowanie danych z różnych źródeł, takich jak faktury zamówień, potwierdzenia sprzedaży i przechowywanie ich w bazie danych, dzięki czemu można łatwiej nimi zarządzać. 
 %\begin{itemize}
 %\end{itemize}
 
 \section{wprowadzenie w zagadnienie}
-
-Zarządzanie dostępnymi zasobami jest niezbędnym procesem dla dużych biznesów. Proces ten składa się z czynności takich jak, śledzenie ilości, lokalizacji i wartości towarów posiadanych przez firmę. Jest to niezbędna czynność dla utrzymania wydajności finansowej firmy oraz maksymalizacji zysków. Zważając na opisane operacje można wyszczególnić duże wyzwanie stojące przed firmami chcącymi optymalnie zarządzać swoimi zasobami. Jest nim importowanie danych z różnych źródeł, takich jak faktury zamówień, potwierdzenia sprzedaży, dane o załadunkach i tym podobne, a następnie przechowywanie ich w bazie danych, dzięki czemu można łatwiej nimi zarządzać. Zazwyczaj takie dane będą dostępne w formie plików PDF, lub będzie możliwe ich do tej postaci zeskanowanie, co ułatwia ich przechowywanie i podgląd jednak utrudnia ekstrakcje danych z takich plików. 
-
-W celu poradzenia sobie z tym problemem 
-
 %\item osadzenie problemu w dziedzinie 
 \section{cel pracy}
 %\item zakres pracy 
