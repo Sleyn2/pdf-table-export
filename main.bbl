@@ -1,0 +1,157 @@
+% $ biblatex auxiliary file $
+% $ biblatex bbl format version 3.2 $
+% Do not modify the above lines!
+%
+% This is an auxiliary file used by the 'biblatex' package.
+% This file may safely be deleted. It will be recreated as
+% required.
+%
+\begingroup
+\makeatletter
+\@ifundefined{ver@biblatex.sty}
+  {\@latex@error
+     {Missing 'biblatex' package}
+     {The bibliography requires the 'biblatex' package.}
+      \aftergroup\endinput}
+  {}
+\endgroup
+
+\datalist[entry]{nty/global//global/global}
+  \entry{bib:internet}{online}{}
+    \name{author}{2}{}{%
+      {{hash=NI}{%
+         family={Nazwisko},
+         familyi={N\bibinitperiod},
+         given={Imię},
+         giveni={I\bibinitperiod},
+      }}%
+      {{hash=NI}{%
+         family={Nazwisko},
+         familyi={N\bibinitperiod},
+         given={Imię},
+         giveni={I\bibinitperiod},
+      }}%
+    }
+    \strng{namehash}{NINI1}
+    \strng{fullhash}{NINI1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{sortinit}{N}
+    \field{sortinithash}{N}
+    \field{title}{Tytuł strony internetowej}
+    \verb{url}
+    \verb http://gdzies/w/internecie/internet.html
+    \endverb
+    \field{year}{2021}
+    \field{urlday}{30}
+    \field{urlmonth}{09}
+    \field{urlyear}{2021}
+  \endentry
+
+  \entry{bib:konferencja}{inproceedings}{}
+    \name{author}{3}{}{%
+      {{hash=NI}{%
+         family={Nazwisko},
+         familyi={N\bibinitperiod},
+         given={Imię},
+         giveni={I\bibinitperiod},
+      }}%
+      {{hash=NI}{%
+         family={Nazwisko},
+         familyi={N\bibinitperiod},
+         given={Imię},
+         giveni={I\bibinitperiod},
+      }}%
+      {{hash=NI}{%
+         family={Nazwisko},
+         familyi={N\bibinitperiod},
+         given={Imię},
+         giveni={I\bibinitperiod},
+      }}%
+    }
+    \strng{namehash}{NININI1}
+    \strng{fullhash}{NININI1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{sortinit}{N}
+    \field{sortinithash}{N}
+    \field{booktitle}{Nazwa konferecji}
+    \field{pages}{5346\bibrangedash 5349}
+    \field{title}{Tytuł artykułu konferencyjnego}
+    \field{year}{2006}
+  \endentry
+
+  \entry{bib:artykul}{article}{}
+    \name{author}{3}{}{%
+      {{hash=NI}{%
+         family={Nazwisko},
+         familyi={N\bibinitperiod},
+         given={Imię},
+         giveni={I\bibinitperiod},
+      }}%
+      {{hash=NI}{%
+         family={Nazwisko},
+         familyi={N\bibinitperiod},
+         given={Imię},
+         giveni={I\bibinitperiod},
+      }}%
+      {{hash=NI}{%
+         family={Nazwisko},
+         familyi={N\bibinitperiod},
+         given={Imię},
+         giveni={I\bibinitperiod},
+      }}%
+    }
+    \strng{namehash}{NININI1}
+    \strng{fullhash}{NININI1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{sortinit}{N}
+    \field{sortinithash}{N}
+    \field{number}{8}
+    \field{pages}{1092\bibrangedash 1113}
+    \field{title}{Tytuł artykułu w czasopiśmie}
+    \field{volume}{157}
+    \field{journaltitle}{Tytuł czasopisma}
+    \field{year}{2016}
+  \endentry
+
+  \entry{bib:ksiazka}{book}{}
+    \name{author}{3}{}{%
+      {{hash=NI}{%
+         family={Nazwisko},
+         familyi={N\bibinitperiod},
+         given={Imię},
+         giveni={I\bibinitperiod},
+      }}%
+      {{hash=NI}{%
+         family={Nazwisko},
+         familyi={N\bibinitperiod},
+         given={Imię},
+         giveni={I\bibinitperiod},
+      }}%
+      {{hash=NI}{%
+         family={Nazwisko},
+         familyi={N\bibinitperiod},
+         given={Imię},
+         giveni={I\bibinitperiod},
+      }}%
+    }
+    \list{publisher}{1}{%
+      {Wydawnictwo}%
+    }
+    \strng{namehash}{NININI1}
+    \strng{fullhash}{NININI1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{sortinit}{N}
+    \field{sortinithash}{N}
+    \field{isbn}{83-204-3229-9-434}
+    \field{title}{Tytuł książki}
+    \list{location}{1}{%
+      {Warszawa}%
+    }
+    \field{year}{2017}
+  \endentry
+\enddatalist
+\endinput
