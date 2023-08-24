@@ -17,6 +17,108 @@
 \endgroup
 
 \datalist[entry]{nty/global//global/global}
+  \entry{bib:iso}{online}{}
+    \name{author}{1}{}{%
+      {{hash=I}{%
+         family={32000-1:2008},
+         familyi={\bibinithyphendelim \bibinitperiod},
+         given={ISO},
+         giveni={I\bibinitperiod},
+      }}%
+    }
+    \strng{namehash}{I1}
+    \strng{fullhash}{I1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{sortinit}{3}
+    \field{sortinithash}{3}
+    \field{title}{Document management — Portable document format — Part 1:
+  PDF 1.7}
+    \verb{url}
+    \verb https://www.iso.org/standard/51502.html
+    \endverb
+    \field{year}{2008}
+    \field{urlday}{12}
+    \field{urlmonth}{08}
+    \field{urlyear}{2023}
+  \endentry
+
+  \entry{bib:pdf_logo}{online}{}
+    \name{author}{1}{}{%
+      {{hash=IAS}{%
+         family={Incorporated},
+         familyi={I\bibinitperiod},
+         given={Adobe\bibnamedelima Systems},
+         giveni={A\bibinitperiod\bibinitdelim S\bibinitperiod},
+      }}%
+    }
+    \strng{namehash}{IAS1}
+    \strng{fullhash}{IAS1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{sortinit}{I}
+    \field{sortinithash}{I}
+    \field{title}{Adobe}
+    \verb{url}
+    \verb https://www.adobe.com/legal/permissions/icons-web-logos.html
+    \endverb
+    \field{year}{2023}
+    \field{urlday}{18}
+    \field{urlmonth}{08}
+    \field{urlyear}{2023}
+  \endentry
+
+  \entry{bib:pdf_ref}{online}{}
+    \name{author}{1}{}{%
+      {{hash=IAS}{%
+         family={Incorporated},
+         familyi={I\bibinitperiod},
+         given={Adobe\bibnamedelima Systems},
+         giveni={A\bibinitperiod\bibinitdelim S\bibinitperiod},
+      }}%
+    }
+    \strng{namehash}{IAS1}
+    \strng{fullhash}{IAS1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{sortinit}{I}
+    \field{sortinithash}{I}
+    \field{title}{PDF Reference, Sixth Edition, 1.7}
+    \verb{url}
+    \verb https://opensource.adobe.com/dc-acrobat-sdk-docs/pdfstandards/pdfrefe
+    \verb rence1.7old.pdf
+    \endverb
+    \field{year}{2006}
+    \field{urlday}{12}
+    \field{urlmonth}{08}
+    \field{urlyear}{2023}
+  \endentry
+
+  \entry{bib:adobe_cert}{online}{}
+    \name{author}{1}{}{%
+      {{hash=IAS}{%
+         family={Incorporated},
+         familyi={I\bibinitperiod},
+         given={Adobe\bibnamedelima Systems},
+         giveni={A\bibinitperiod\bibinitdelim S\bibinitperiod},
+      }}%
+    }
+    \strng{namehash}{IAS1}
+    \strng{fullhash}{IAS1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{sortinit}{I}
+    \field{sortinithash}{I}
+    \field{title}{Public Patent License, ISO 32000-1}
+    \verb{url}
+    \verb http://www.adobe.com/pdf/pdfs/ISO32000-1PublicPatentLicense.pdf
+    \endverb
+    \field{year}{2008}
+    \field{urlday}{13}
+    \field{urlmonth}{08}
+    \field{urlyear}{2023}
+  \endentry
+
   \entry{bib:internet}{online}{}
     \name{author}{2}{}{%
       {{hash=NI}{%
@@ -152,6 +254,52 @@
       {Warszawa}%
     }
     \field{year}{2017}
+  \endentry
+
+  \entry{bib:pdfminer}{online}{}
+    \name{author}{1}{}{%
+      {{hash=SY}{%
+         family={Shinyama},
+         familyi={S\bibinitperiod},
+         given={Yasuke},
+         giveni={Y\bibinitperiod},
+      }}%
+    }
+    \strng{namehash}{SY1}
+    \strng{fullhash}{SY1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{sortinit}{S}
+    \field{sortinithash}{S}
+    \field{title}{pdfminer 20191125}
+    \verb{url}
+    \verb https://pypi.org/project/pdfminer/
+    \endverb
+    \field{year}{2019}
+    \field{urlday}{20}
+    \field{urlmonth}{08}
+    \field{urlyear}{2023}
+  \endentry
+
+  \entry{bib:Wang}{article}{}
+    \name{author}{1}{}{%
+      {{hash=WX}{%
+         family={Wang},
+         familyi={W\bibinitperiod},
+         given={X.},
+         giveni={X\bibinitperiod},
+      }}%
+    }
+    \strng{namehash}{WX1}
+    \strng{fullhash}{WX1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{sortinit}{W}
+    \field{sortinithash}{W}
+    \field{title}{Praca doktorancka pt. Tabular Abstraction, Editing and
+  Formatting.}
+    \field{journaltitle}{University of Waterloo}
+    \field{year}{1996}
   \endentry
 \enddatalist
 \endinput

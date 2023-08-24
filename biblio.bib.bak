@@ -20,6 +20,20 @@
   Volume                   = {157}
 }
 
+@Article{bib:Wang,
+  Title                    = {Praca doktorancka pt. Tabular Abstraction, Editing and Formatting.},
+  Author                   = {X. Wang},
+  Journal                  = {University of Waterloo},
+  Year                     = {1996}
+}
+
+@Article{bib:Hurst,
+  Title                    = {Praca doktorancka pt. The Interpretation of Tables in Texts.},
+  Author                   = {M. Hurst},
+  Journal                  = {University of Edinburgh},
+  Year                     = {2000}
+}
+
 % artykul konferencyjny
 @InProceedings{bib:konferencja,
   Title                    = {Tytuł artykułu konferencyjnego},
@@ -27,6 +41,14 @@
   Booktitle                = {Nazwa konferecji},
   Year                     = {2006}, 
   Pages                    = {5346--5349}
+}
+
+@online{bib:pdf_ref,
+  author                   = {Adobe Systems Incorporated},
+  title                    = {PDF Reference, Sixth Edition, 1.7},
+  year                     = {2006}, 
+  url                      = {https://opensource.adobe.com/dc-acrobat-sdk-docs/pdfstandards/pdfreference1.7old.pdf},
+  urldate                  = {2023-08-12}
 }
  
 % zrodlo internetowe
@@ -36,4 +58,36 @@
   year                     = {2021}, 
   url                      = {http://gdzies/w/internecie/internet.html},
   urldate                  = {2021-09-30}
+}
+
+@online{bib:pdf_logo,
+  author                   = {Adobe Systems Incorporated},
+  title                    = {Adobe},
+  year                     = {2023}, 
+  url                      = {https://www.adobe.com/legal/permissions/icons-web-logos.html},
+  urldate                  = {2023-08-18}
+}
+
+@online{bib:iso,
+  author                   = {ISO 32000-1:2008},
+  title                    = {Document management — Portable document format — Part 1: PDF 1.7},
+  year                     = {2008}, 
+  url                      = {https://www.iso.org/standard/51502.html},
+  urldate                  = {2023-08-12}
+}
+
+@online{bib:adobe_cert,
+  author                   = {Adobe Systems Incorporated},
+  title                    = {Public Patent License, ISO 32000-1},
+  year                     = {2008}, 
+  url                      = {http://www.adobe.com/pdf/pdfs/ISO32000-1PublicPatentLicense.pdf},
+  urldate                  = {2023-08-13}
+}
+
+@online{bib:pdfminer,
+  author                   = {Yasuke Shinyama},
+  title                    = {pdfminer 20191125},
+  year                     = {2019}, 
+  url                      = {https://pypi.org/project/pdfminer/},
+  urldate                  = {2023-08-20}
 }

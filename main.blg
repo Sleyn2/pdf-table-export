@@ -22,47 +22,49 @@ Reallocating 'singl_function' (item size: 4) to 100 items.
 Reallocating 'singl_function' (item size: 4) to 100 items.
 Database file #1: main-blx.bib
 Database file #2: biblio.bib
+Warning--I didn't find a database entry for "Hurst"
 Biblatex version: 3.18
 Reallocating 'wiz_functions' (item size: 4) to 9000 items.
 Reallocating 'singl_function' (item size: 4) to 100 items.
-You've used 5 entries,
+You've used 11 entries,
             6399 wiz_defined-function locations,
-            1228 strings with 9365 characters,
-and the built_in function-call counts, 34854 in all, are:
-= -- 2533
-> -- 939
-< -- 167
-+ -- 1328
-- -- 516
-* -- 2346
-:= -- 4316
+            1261 strings with 10092 characters,
+and the built_in function-call counts, 72231 in all, are:
+= -- 4707
+> -- 2770
+< -- 391
++ -- 3091
+- -- 1842
+* -- 4636
+:= -- 8570
 add.period$ -- 0
-call.type$ -- 5
-change.case$ -- 58
-chr.to.int$ -- 68
-cite$ -- 8
-duplicate$ -- 3658
-empty$ -- 2733
-format.name$ -- 350
-if$ -- 6800
+call.type$ -- 11
+change.case$ -- 112
+chr.to.int$ -- 188
+cite$ -- 20
+duplicate$ -- 7050
+empty$ -- 5962
+format.name$ -- 644
+if$ -- 13681
 int.to.chr$ -- 0
-int.to.str$ -- 14
+int.to.str$ -- 30
 missing$ -- 0
-newline$ -- 157
-num.names$ -- 201
-pop$ -- 1517
+newline$ -- 303
+num.names$ -- 459
+pop$ -- 3516
 preamble$ -- 1
-purify$ -- 87
+purify$ -- 153
 quote$ -- 0
-skip$ -- 950
+skip$ -- 2019
 stack$ -- 0
-substring$ -- 4389
-swap$ -- 674
-text.length$ -- 169
-text.prefix$ -- 4
+substring$ -- 8544
+swap$ -- 1532
+text.length$ -- 368
+text.prefix$ -- 10
 top$ -- 1
-type$ -- 158
+type$ -- 362
 warning$ -- 0
-while$ -- 554
+while$ -- 965
 width$ -- 0
-write$ -- 153
+write$ -- 293
+(There was 1 warning)

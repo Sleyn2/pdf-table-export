@@ -87,8 +87,8 @@
 \newcommand{\Title}{Moduł do obsługi importów danych finansowych z plików PDF}           % tytuł pracy po polsku
 \newcommand{\TitleAlt}{Module for importing inventory data from PDF files}                     % thesis title in English
 \newcommand{\Program}{Informatyka}            % kierunek studiów  (bez $\langle$ i $\rangle$)
-\newcommand{\Specialisation}{internet i technologie sieciowe}     % specjalność  (bez $\langle$ i $\rangle$)
-\newcommand{\Departament}{Katedra Sieci i Systemów Komputerowych}        % katedra promotora  (bez $\langle$ i $\rangle$)
+\newcommand{\Specialisation}{Internet i technologie sieciowe}     % specjalność  (bez $\langle$ i $\rangle$)
+\newcommand{\Departament}{Sieci i Systemów Komputerowych}        % katedra promotora  (bez $\langle$ i $\rangle$)
 
 % Jeżeli został wyznaczony promotor pomocniczy lub opiekun, proszę go/ją wpisać ...
 \newcommand{\Consultant}{} % dane promotora pomocniczego, opiekuna (bez $\langle$ i $\rangle$)
@@ -475,11 +475,10 @@ escapeinside={@*}{*@},%
 \Title
 
 \subsubsection*{Streszczenie}  
-(Streszczenie pracy – odpowiednie pole w systemie APD powinno zawierać kopię tego streszczenia.)
+Głównym celem tego projektu jest opracowanie praktycznego oprogramowania, które automatyzuje proces wydobycia istotnych danych z tabel zawartych w dokumentach o formacie \emph{PDF} (Portable Document Format). Wybór formatu \emph{PDF} jako głównego celu wynika z jego szerokiego zastosowania i dostępności licznych zbiorów danych prezentowanych w danym typie plików. 
 
 \subsubsection*{Słowa kluczowe} 
-(2-5 slow (fraz) kluczowych, oddzielonych przecinkami)
-
+PDF, ekstrakcja danych, Adobe, wykrywanie tabel, ekstrakcja tabel
 \subsubsection*{Thesis title} 
 \begin{otherlanguage}{british}
 \TitleAlt
@@ -487,11 +486,11 @@ escapeinside={@*}{*@},%
 
 \subsubsection*{Abstract} 
 \begin{otherlanguage}{british}
-(Thesis abstract – to be copied into an appropriate field during an electronic submission – in English.)
+The main goal of this project is to develop practical software that automates the process of extracting relevant data from tables contained within documents in \emph{PDF} (Portable Document Format) format. The choice of the \emph{PDF} format as the primary target stems from its wide usage and the availability of numerous datasets presented in this file type.
 \end{otherlanguage}
 \subsubsection*{Key words}  
 \begin{otherlanguage}{british}
-(2-5 keywords, separated by commas)
+ PDF, data extraction, Adobe, table detection, table extraction
 \end{otherlanguage}
 
 
@@ -516,36 +515,52 @@ escapeinside={@*}{*@},%
 % TODO
 \chapter{Wstęp}
 
-%\begin{itemize}
+%\begine}
 %\end{itemize}
 
-\section{wprowadzenie w zagadnienie}
+\section{Wprowadzenie w zagadnienie}
 
-Zarządzanie dostępnymi zasobami jest niezbędnym procesem dla dużych biznesów. Proces ten składa się z czynności takich jak, śledzenie ilości, lokalizacji i wartości towarów posiadanych przez firmę. Jest to niezbędna czynność dla utrzymania wydajności finansowej firmy oraz maksymalizacji zysków. Zważając na opisane operacje można wyszczególnić duże wyzwanie stojące przed firmami chcącymi optymalnie zarządzać swoimi zasobami. Jest nim importowanie danych z różnych źródeł, takich jak faktury zamówień, potwierdzenia sprzedaży, dane o załadunkach i tym podobne, a następnie przechowywanie ich w bazie danych, dzięki czemu można łatwiej nimi zarządzać. Zazwyczaj takie dane będą dostępne w formie plików PDF, lub będzie możliwe ich do tej postaci zeskanowanie, co ułatwia ich przechowywanie i podgląd jednak utrudnia ekstrakcje danych z takich plików. 
+Importowanie danych z różnych źródeł, takich jak faktury zamówień, potwierdzenia sprzedaży, dane o załadunkach i tym podobne, a następnie importowanie ich do firmowych baz danych, jest problemem, nad którym chce się pochylić niniejsza praca. Jako sposób prezentacji takich danych często używane są tabele, jest to intuicyjny i bardzo efektywny sposób zapisu dużych zbiorów danych. Jest to metoda stosowana niezależnie od tego jaki typ danych chcemy przedstawić, z tego powodu nie ma żadnego standardu określającego jak takie tabele powinny być przedstawiane. Często różnią się one w zależności od celu i preferencji twórcy, jednak w obecnych czasach cyfryzacji, zazwyczaj  będą one również dostępne w formie plików \emph{PDF} (Portable Document Format), lub będzie możliwe ich do tej postaci zeskanowanie. Znacznie ułatwia to ich przechowywanie i podgląd, jednak utrudnia ekstrakcje danych z takich plików. 
 
-W celu poradzenia sobie z tym problemem, wiele firm wykorzystuje specjalnie przygotowane aplikacje, które pozwalają na automatyzację procesu importowania danych z plików PDF. Takie aplikacje mogą importować dane w postaci plików PDF, a następnie znajdywać w nich najważniejsze dane i eksportować je do żądanego formatu, obsługiwanego przez bazę danych lub inne aplikacje służące do zarządzania biznesem. 
+W celu rozwiązania tego problemu, wiele firm wykorzystuje specjalnie przygotowane aplikacje, które pozwalają na automatyzację procesu importowania danych z plików \emph{PDF}. Takie aplikacje mogą importować dane w postaci plików \emph{PDF}, a następnie wykrywać w nich najważniejsze dane i eksportować je do żądanego formatu, obsługiwanego przez bazę danych lub inne aplikacje służące do zarządzania danymi. Takie aplikacje mogą przechowywać dane w własnym formacie, i pozwalać na łatwy dostęp do zasobów firmy, nawet bez znajomości działania baz danych. 
 
 %\item osadzenie problemu w dziedzinie 
-\section{cel pracy}
+\section{Cel pracy}
 
-Celem tej pracy jest ocena różnych bibliotek oraz próba utworzenia własnego udoskonalonego rozwiązania, które umożliwi eksportowanie danych z plików o rozszerzeniu PDF, do łatwiej obsługiwanych plików wyjściowych. Prowadząc te badania, przeprowadzone zostaną testy na paru rozwiązaniach w celu porównania ich możliwości. Będziemy analizować zarówno biblioteki dostępne na rynku, jak i moduły open-source, które oferują funkcje eksportu danych z plików PDF. Przy ocenie tych rozwiązań będziemy kierować się kryteriami takimi jak dokładność ekstrakcji danych, obsługiwane formaty plików wyjściowych, łatwość integracji, wydajność i wsparcie dla rozszerzeń PDF.
+Celem tej pracy jest utworzenie własnej aplikacji, która umożliwi łatwe wyeksportowanie danych z tabel znajdujących się w plikach o rozszerzeniu \emph{PDF}, do łatwiej obsługiwanych plików wyjściowych w formacie \emph{CSV} (comma-separated values). Aplikacja zostanie stworzona w taki sposób, aby umożliwiała samodzielne użytkowanie programu bezpośrednio z dokumentami PDF, a także wykorzystywanie jej jako część innych narzędzi i projektów. Wyjście stworzonej aplikacji oprogramowania ma umożliwić łatwą, dalszą obsługę wyeksportowanych danych, dlatego zdecydowano się wykorzystać wyżej wspomniany format CSV. Cały kod źródłowy tego projektu pracy dyplomowej zostanie udostępniony online na platformie www.github.com
 
-Końcowym celem tej pracy jest znalezienie najlepszej dla naszych wymagań biblioteki, która pozwoli stworzyć narzędzie, umożliwiające skuteczne poradzenie sobie z problemem importowania danych z plików PDF przez faktyczne firmy.
+\section{Budowa Tabeli}
+
+Jednym z częściej spotykanych modeli koncepcyjnych tabeli jest ten zaproponowany przez Wanga \cite{bib:Wang}, a później rozbudowany przez Hursta \cite{Hurst}. Wang definiuje tabelę jako podzieloną na cztery główne obszary: 
+\begin{itemize}
+\item the stub czyli pień, jest to 
+kolumna, która zawiera nagłówki wierszy i podnagłówki; 
+\item boxhead tworzący pojemnik na nagłówki kolumn (z wyłączeniem nagłówka kolumny) 
+\item stubhead, nagłówek pierwszej kolumny, który zawiera nagłówek dla kolumny, 
+\item body czyli główną treść tabeli, część ta zawiera faktyczne dane tabeli. 
+\end{itemize}
+W niniejszej pracy magisterskiej definicje Wanga zostały nieco dostosowane, tak aby nagłówek kolumny był uważany za część kolumny. Warto wspomnieć, że oczywiście nie każda tabela jest tak samo zbudowana. Na przykład, dla dużej liczby tabel, nagłówki kolumn nie są zebrane w jednej ramce. Oprócz tych definicji, praca magisterska korzysta z definicji takich elementów tabeli jak: nagłówek, kolumna, wiersz, komórka. Rysunek 1.1 ilustruje te definicje.
+
+\begin{figure}
+\includegraphics[width=1\textwidth]{./images/table.png}
+\caption{Budowa tebeli z wyszczególnieniem omówionych elementów}
+\label{fig:pdf_logo}
+\end{figure}
 
 %\item zakres pracy 
-\section{charakterystyka rozdziałów}
+\section{Charakterystyka rozdziałów}
 
-W niniejszej pracy naukowej przedstawiamy szereg rozdziałów, które składają się na kompleksową analizę modułu do importowania danych inwentaryzacyjnych z plików PDF. Każdy z tych rozdziałów ma swoje unikalne znaczenie i koncentruje się na konkretnych aspektach badania. Poniżej przedstawiamy krótką charakterystykę poszczególnych rozdziałów:
+W niniejszej pracy naukowej przedstawiamy szereg rozdziałów, które składają się na kompleksową analizę modułu do importowania danych inwentaryzacyjnych z plików \emph{PDF}. Każdy z tych rozdziałów ma swoje unikalne znaczenie i koncentruje się na konkretnych aspektach badania. Poniżej przedstawiamy krótką charakterystykę poszczególnych rozdziałów:
 
 Rozdział 2: Definiowanie wymagań
 
-W tym rozdziale skupiamy się na ustaleniu konkretnych wymagań dla modułu lub biblioteki służącej do importowania danych z plików PDF.
-Analizujemy różne typy danych, które mają zostać zaimportowane, oraz identyfikujemy pola w plikach PDF, które będą przechwytywane.
-Przeanalizujemy również różne formaty plików, z którymi moduł będzie pracował, aby zapewnić wszechstronność i elastyczność rozwiązania.
+W tym rozdziale skupiamy się na ustaleniu konkretnych wymagań dla modułu lub biblioteki służącej do importowania danych z plików \emph{PDF}.
+Analizujemy różne typy danych, które mają zostać zaimportowane, oraz identyfikujemy pola w plikach \emph{PDF}, które będą przechwytywane.
+Przeanalizujemy również inne formaty plików, z którymi moduł będzie pracował, aby zapewnić wszechstronność i elastyczność rozwiązania.
 
 Rozdział 3: Badanie istniejących rozwiązań
 
-W tym rozdziale skoncentrujemy się na dokładnym przejrzeniu istniejących modułów i bibliotek dostępnych na rynku do importowania danych z plików PDF.
+W tym rozdziale skoncentrujemy się na dokładnym przejrzeniu istniejących modułów i bibliotek dostępnych na rynku do importowania danych z plików \emph{PDF}.
 Przeanalizujemy funkcje, jakie oferują te rozwiązania oraz przetestujemy ich możliwości. Celem tego rozdziału jest zgłębienie istniejących rozwiązań i dostrzeżenie ich mocnych i słabych stron w celu stworzenia solidnej podstawy do dalszych badań.
 
 Rozdział 4: Ocena dostępnych opcji
@@ -579,51 +594,93 @@ Każdy z tych rozdziałów przyczynia się do pełnego zrozumienia problemu i tw
 %\end{itemize}
 \section{Formaty plików występujące w pracy}
 
-W tym punkcie skupiamy się na analizie formatów plików, z którymi będziemy pracować, są nimi formaty PDf oraz CSV. Plik PDF (Portable Document Format) jest zbudowany zgodnie z określonymi specyfikacjami opracowanymi przez firmę Adobe Systems. Format ten ma na celu zapewnienie niezależności od platformy i zachowanie spójności formatowania, niezależnie od urządzenia, na którym jest wyświetlany. Natomiast CSV (Comma-Separated Values) to prosty format przechowywania danych tabelarycznych w postaci tekstowej. Jest szeroko stosowany do wymiany danych między różnymi aplikacjami i systemami, ze względu na swoją łatwość w odczycie i zapisie.
+W tym miejscu opisane zostaną formaty plików, z których korzystano podczas tworzenia te pracy, to jest, \emph{PDF} oraz \emph{CSV}. 
 
 \subsection{Pliki PDF}
 
-Pliki PDF mogą różnić się wewnętrzną strukturą, wersjami formatu, a także zastosowanymi technologiami i funkcjonalnościami. W celu skutecznego importowania danych, konieczne jest zrozumienie tych formatów i ich cech.
+Format \emph{PDF} (Portable Document Format) jest zbudowany zgodnie z określonymi specyfikacjami opracowanymi przez firmę Adobe Systems na początku lat 90. Format ten ma na celu zapewnienie niezależności od platformy i zachowanie spójności formatowania, niezależnie od urządzenia, na którym jest wyświetlany\cite{bib:pdf_ref}. Specyfikacja \emph{PDF} została udostępniona bezpłatnie w 1993 roku, ale pozostała jako format własnościowy, aż w 2008 roku została oficjalnie wydana jako otwarty standard (ISO 32000-1:2008)\cite{bib:iso} Ta licencja przyznaje bezpłatne prawa licencyjne do wszystkich patentów należących do Adobe, które są niezbędne do tworzenia, używania, sprzedaży i dystrybucji implementacji zgodnych z formatem \emph{PDF} \cite{bib:adobe_cert}. Oprócz tych cech, pliki \emph{PDF} oferują dobrą kompresję, zmniejszając rozmiar pliku i czyniąc format idealnym do dystrybucji online. Logo Adobe PDF jest pokazane na Rys. \ref{fig:pdf_logo}.
 
-W pierwszej kolejności warto zwrócić uwagę na różnice między starszymi a nowszymi wersjami formatu PDF. Pliki PDF są stale rozwijane i udoskonalane, dlatego ważne jest, aby zrozumieć, jakie funkcje i możliwości są dostępne w różnych wersjach. Niektóre starsze wersje mogą nie obsługiwać niektórych zaawansowanych funkcji, co należy wziąć pod uwagę przy tworzeniu modułu importującego.
+\begin{figure}
+\centering
+\includegraphics[width=0.2\textwidth]{./images/PDF_logo.png}
+\caption{Logo formatu PDF firmy Adobe jest rozpoznawalne dla wielu osób ze względu na popularność 
+\cite{bib:pdf_logo}}
+\label{fig:pdf_logo}
+\end{figure}
 
-Kolejnym aspektem jest analiza możliwości skryptowania i interaktywności w plikach PDF. Niektóre pliki PDF mogą zawierać skrypty JavaScript lub elementy interaktywne, takie jak formularze, przyciski, linki itp. Istotne jest zrozumienie tych elementów i określenie, czy i w jaki sposób można je obsłużyć podczas importowania danych.
+W pierwszej kolejności warto zwrócić uwagę na różnice między starszymi a nowszymi wersjami formatu \emph{PDF}. Pliki \emph{PDF} są stale rozwijane i udoskonalane, dlatego ważne jest, aby zrozumieć, jakie funkcje i możliwości są dostępne w różnych wersjach. Niektóre starsze wersje mogą nie obsługiwać niektórych zaawansowanych funkcji, co należy wziąć pod uwagę przy tworzeniu modułu importującego.
+
+Kolejnym aspektem jest analiza możliwości skryptowania i interaktywności w plikach \emph{PDF}. Niektóre pliki \emph{PDF} mogą zawierać skrypty JavaScript lub elementy interaktywne, takie jak formularze, przyciski, linki itp. Istotne jest zrozumienie tych elementów i określenie, czy i w jaki sposób można je obsłużyć podczas importowania danych.
 
 Dodatkowo, badamy w tym typie dokumentów wykorzystuje się różne technologie i standardy związane z potrzebami użytkownika. Są nimi standardy takie jak PDF/A (standard archiwizacji), PDF/X (standard dla publikacji drukowanych) czy PDF/UA (standard dostępności). W zależności od specyfiki aplikacji i wymagań postawionych przed rozwiązaniem, konieczne może być uwzględnienie tych standardów i zapewnienie zgodności modułu importującego.
 
-Plik PDF składa się z różnych elementów i struktur, które razem tworzą dokument. Jego strukturę możemy podzielić na 4 części: 
+Plik \emph{PDF} składa się z różnych elementów i struktur, które razem tworzą dokument. Jego strukturę możemy podzielić na 4 części: 
 \begin{itemize}
-\item Header - Jest to sekcja zawierająca informacje o strukturze i metadanych pliku PDF, takich jak wersja specyfikacji PDF, typ pliku, używane czcionki, rozmiar strony itp.
-\item Body - To główna część pliku PDF, która zawiera treść dokumentu, taką jak tekst, obrazy, grafiki, tabele itp. Ciało składa się z sekwencji obiektów PDF, które są odpowiedzialne za przechowywanie danych i struktury dokumentu.
-\item Xref table - Jest to sekcja pliku PDF, w której znajduje się spis wszystkich obiektów, używanych w dokumencie. Każdy obiekt ma unikalny numer identyfikacyjny i jest przechowywany w formacie klucz-wartość.
-\item Trailer - Ta sekcja zawiera informacje o lokalizacji i numerze generacji wszystkich obiektów w pliku PDF. Jest to wykorzystywane do odnalezienia i odzyskania obiektów podczas odczytu lub modyfikacji pliku.
+\item Header - informacje o strukturze i metadanych pliku \emph{PDF}, takich jak wersja specyfikacji \emph{PDF}, typ pliku, używane czcionki, rozmiar strony itp.
+\item Body - treść dokumentu, taką jak tekst, obrazy, grafiki, tabele itp. Ciało składa się z sekwencji obiektów PDF, które są odpowiedzialne za przechowywanie danych i struktury dokumentu.
+\item Xref table - spis wszystkich obiektów, używanych w dokumencie. Każdy obiekt ma unikalny numer identyfikacyjny i jest przechowywany w formacie klucz-wartość.
+\item Trailer - informacje o lokalizacji i numerze generacji wszystkich obiektów w pliku \emph{PDF}. Jest to wykorzystywane do odnalezienia i odzyskania obiektów podczas odczytu lub modyfikacji pliku.
 \end{itemize}
 
-Trudność przy obsłudze plików typu PDF jest zauważalna przy przeanalizowaniu tej struktury. Zazwyczaj pliki te odczytuje się od tyłu, wynika to z tego, że na końcu zawarte są informacje o wersji zapisu, oraz położeniu najważniejszych struktur, jednak plik ten przy otworzeniu go bez odpowiedniego narzędzia, takiego jak przeglądarki plików pdf firmy Adobe Systems, nie pozwoli nam uzyskać żadnyuch sensownych danych i informacji o ich położeniu. Z tego powodu aplikacje eksportujące te dane nie są trywialne, a ich zapotrzebowanie jest realnym problemem.
+Trudność przy obsłudze plików typu \emph{PDF} jest zauważalna przy przeanalizowaniu tej struktury. Zazwyczaj pliki te odczytuje się od końca, wynika to z tego, że na końcu zawarte są informacje o wersji zapisu, oraz położeniu najważniejszych struktur.
 
-Analiza formatów plików PDF pozwala nam lepiej zrozumieć złożoność i różnorodność plików, które będziemy importować. Umożliwia nam to dokładne określenie wymagań naszego modułu i odpowiednie dostosowanie go do różnych formatów plików PDF, z którymi będziemy pracować.
+Analiza formatów plików \emph{PDF} pozwala nam lepiej zrozumieć złożoność i różnorodność plików, które będą importowane do tworzonej aplikacji. Pozwala to na dokładne określenie wymagań tworzonego modułu i odpowiednie dostosowanie go do różnych formatów plików \emph{PDF}, które będzie obsługiwać.
 
 \subsection{Pliki CSV}
 
-W pliku CSV dane są przechowywane w formie tabeli, gdzie każdy wiersz reprezentuje rekord, a poszczególne pola w rekordzie są oddzielane separatorem, najczęściej przecinkiem, jak sugeruje sama nazwa tego formatu, jednak inne separatory, takie jak średnik, również są stosowane w poszczególnych przypadkach. Pliki CSV wyróżnia to, że mimo możliwości przechowywania złożonych tabel z danymi, jest on formatem tekstowym. Oznacza to, że dane są zapisywane jako tekst, bez złożonej struktury danych, a dopiero następnie można je wyśiwtlać w postaci tabel lub arkuszy. Można w nich przechowywać dzięki temu różne rodzaje danych, takie jak tekst, liczby, daty itp. bez znacznego zwiększenia ich objętości pamięciowej. Wyżej wspomniane wariacje w postaci wykorzystanych separatorów, pozwalają na zawieranie dowolnych znaków specjalnych, takich jak przecinki w danych liczbowych.
-
-Pliki CSV są łatwe do tworzenia i edycji, nie wymagają zaawansowanych aplikacji, można je odczytać przy użyciu najprostszych edytorów tekstowych, jednak przy pracy na większej ilości danych wygodne jest użycie programu do obsługi arkuszy kalkulacyjnych. Ponieważ format CSV jest prostym i powszechnie wspieranym typem danych, pliki w tym formacie są szeroko używane do importu i eksportu danych, tworzenia raportów, analizy danych, integracji między systemami, itp. Z powodu na jego uniwersalność i prostotę, a mimo to duże możliwości, postanowiłem wykorzystać ten typ danych jako format wyjściowy z aplikacji importującej.
+W pliku \emph{CSV} dane są przechowywane w formie tabeli, gdzie każdy wiersz reprezentuje rekord, a poszczególne pola w rekordzie są oddzielane separatorem, najczęściej przecinkiem, jak sugeruje sama nazwa tego formatu, jednak inne separatory, takie jak średnik, również są stosowane w poszczególnych przypadkach. Pliki \emph{CSV} wyróżnia to, że mimo możliwości przechowywania złożonych tabel z danymi, jest on formatem tekstowym. Oznacza to, że dane są zapisywane jako tekst, bez złożonej struktury danych, a dopiero następnie można je wyświetlać w postaci tabel lub arkuszy. Można w nich przechowywać dzięki temu różne rodzaje danych, takie jak tekst, liczby, daty itp. bez znacznego zwiększenia ich objętości pamięciowej. Wyżej wspomniane wariacje w postaci wykorzystanych separatorów, pozwalają na zawieranie dowolnych znaków specjalnych, takich jak przecinki w danych liczbowych.
 
 \section{Przegląd typów danych do importowania}
 
-Plik PDF może zawierać różne formy zapisu informacji, takie jak tekst, tabele, obrazy, formularze itp. W celu efektywnego importowania danych z tych plików do innego formatu, konieczne jest zidentyfikowanie i zrozumienie charakterystyki tych typów danych. 
+Plik \emph{PDF} może zawierać różne formy zapisu informacji, takie jak tekst, tabele, obrazy, formularze itp. W celu efektywnego importowania danych z tych plików do innego formatu, konieczne jest zidentyfikowanie i zrozumienie charakterystyki tych typów danych. 
 
-Przede wszystkim, analizujemy sposoby ekstrakcji tekstu z plików PDF. Tekst może występować zarówno w postaci prostej, takiej jak  akapity, nagłówki lub stopki. Jednak często występuje również w bardziej złożonej postaci np. listy, tabele. Ważne jest zrozumienie i rozróżnienie innych sposobów reprezentacji tekstu w pliku PDF, aby móc poprawnie go przechwycić i następnie przekształcić.
+Przede wszystkim, analizujemy sposoby ekstrakcji tekstu z plików \emph{PDF}. Tekst może występować zarówno w postaci prostej, takiej jak  akapity, nagłówki lub stopki. Jednak często występuje również w bardziej złożonej postaci np. listy, tabele.
 
-Kolejnym istotnym typem danych są tabele. Pliki PDF, które będziemy analizować zawierają tabele z danymi, które muszą być zaimportowane do innego formatu w taki sposób, aby zachować strukturę tabelaryczną. W tym punkcie analizujemy metody identyfikacji tabel oraz ekstrakcji danych z nich, uwzględniając zarówno prostsze tabele bez łączeń komórek, jak i bardziej zaawansowane struktury tabelaryczne. Różnią się one przede wszystkim, położeniem komórek, i danymi tekstowymi w nich zawartymi. Nie wszystkie komórki muszą zawierać opis jaki typ danych jest w nich zapisany, dodatkowo zapis ten może być niespójny jeżeli tabela byłaby uzupełniana przez innych pracowników.
+Kolejnym istotnym typem danych są tabele. Pliki \emph{PDF}, które będziemy analizować zawierają tabele z danymi, które muszą być zaimportowane do innego formatu w taki sposób, aby zachować strukturę tabelaryczną. Celem tej pracy jest przedstawienie metody identyfikacji tabel oraz ekstrakcji danych z nich, co zostanie uczynione w kolejnych rozdziałach. Tabele jakie mogą występować w plikach \emph{PDF} to zarówno prostsze zbiory danych bez łączeń komórek, jak i bardziej zaawansowane struktury tabelaryczne, różnią się one przede wszystkim położeniem komórek. Nie wszystkie komórki muszą zawierać opis jaki typ danych jest w nich zapisany, dodatkowo zapis ten może być niespójny jeżeli tabela byłaby uzupełniana przez innych pracowników.
 
-W plikach PDF mogą również występować obrazy, jest to łatwy sposób reprezentacji danych Obrazy mogą mieć różne zastosowania, takie jak wykresy, diagramy, fotografie itp. W tym kontekście analizujemy techniki ekstrakcji tekstu i danych liczbowych z tabel, dlatego obrazy nie będą szczególnie obsługiwane, jednak wymagana jest świadomość istnienia takiego typu danych.
+W plikach \emph{PDF} mogą również występować obrazy, formularze, lub inne struktury, które są zapisane w części Xref pliku \emph{PDF}, przez co możemy je łatwo ominąć podczas ekstrakcji tabeli.
 
-Wreszcie, rozważamy również importowanie danych z formularzy PDF. Pliki PDF często zawierają formularze, w których użytkownicy wprowadzają dane. W celu efektywnego importowania tych danych, badamy metody ekstrakcji danych z formularzy oraz możliwość przeniesienia ich do formatu obsługiwanego przez nasze rozwiązanie.
-
-Przegląd typów danych do importowania umożliwia nam lepsze zrozumienie różnorodności informacji zawartych w plikach PDF oraz wyznaczenie kierunku dalszych badań i rozwoju modułu importującego.
+Przegląd typów danych do importowania umożliwia nam lepsze zrozumienie różnorodności informacji zawartych w plikach \emph{PDF} oraz wyznaczenie kierunku dalszych badań i rozwoju modułu importującego.
 
 % TODO
+
+\section{Problemy związane z importowaniem danych}
+
+Cały proces ekstrakcji danych opiera się na wcześniejszym zdefiniowaniu informacji, na których będą operować algorytmy. Biblioteka o nazwie pdfminer\cite{bib:pdfminer} została wykorzystana w celu ekstrakcji tekstu z plików \emph{PDF}, a algorytmy wykorzystane w projekcie, przetwarzają i interpretują informacje o składnikach pliku i w wypadku potrzeby wyeksportowania tekstu, przekazują je do podanej biblioteki. Dostępne dane nie są tak szczegółowe, jak by się mogło wydawać. Na przykład, dany blok zawierający słowo nie ma dostępnych informacji o użytej czcionce ani stylu czcionki. Podczas wyodrębniania tekstu z pliku \emph{PDF}, proces wyodrębniania zazwyczaj traktuje cały tekst jako znajdujący się na tym samym poziomie linii bazowej.  
+
+Tekst w dokumencie \emph{PDF} jest otrzymywany dla każdej pojedynczej strony w postaci prostokątnych obszarów zawierających pojedyncze słowo tekstu. Każdy prostokątny obszar elementu jest zdefiniowany za pomocą współrzędnych, co nadaje mu dokładne i jednoznaczne położenie oraz rozmiar (szerokość i wysokość) na stronie. Boki pudełek tekstowych zawsze są wyrównane do krawędzi stron; innymi słowy, nie ma przechylonych ani skośnych prostokątów. Formatowanie tekstu takie jak tekst w postaci indeksu górnego lub dolnego, wykorzystane czcionki, pogrubienia, pochylenia itp. zazwyczaj osiąga się poprzez metryki czcionek i dostosowania pozycji, a nie poprzez wyraźne znaczniki.
+
+Ponadto, nie ma żadnych informacji na temat tego, czy dane słowa są częściami zdania, tabeli czy innej struktury. Asocjacja słów i tworzenie zdań (oraz komórek tabeli) musi być wykonane przez algorytmy ekstrakcji danych poprzez analizowanie i przetwarzanie elementów na stronie. Jeśli słowo jest rozdzielone myślnikiem na końcu linii i kontynuuje na kolejnej, jest ono podzielone na dwie zupełnie niepowiązane ramki tekstu.
+
+Współrzędne ramek tekstu są zapisywane za pomocą punktów. W formacie \emph{PDF} punkt to typograficzna jednostka miary, która jest definiowana jako 1/72 cala. Ta spójna jednostka jest wykorzystywana w plikach \emph{PDF} do pozycjonowania i określania nie tylko pozycji i rozmiaru tekstu ale również innych elementów, w tym obrazów i tabel. Użycie punktów jako jednostki pomiarowej w plikach \emph{PDF} zapewnia spójność układu i wizualnego wyglądu treści bez względu na urządzenie wyświetlające lub drukujące. Poniżej znajduje się przeliczenie rozmiaru punktu z cali na milimetry
+
+\begin{align}
+punkt = \frac{1}{72} cala = \frac{25.4}{72} mm = 0.3527(7) mm
+\end{align}
+
+Z tego powodu cały proces ekstrakcji danych z tabel znajdujących się w plikach \emph{PDF}, można podzielić na mniejsze indywidualne zadania
+
+\begin{enumerate}
+\item Odczytywanie zawartości pliku \emph{PDF}.
+\item Rozpoznawanie linii separatorów i siatek.
+\item Lokalizowanie obszarów z tabelami w dokumencie.
+\item Określanie struktury wierszy i kolumn tabeli.
+\item Określanie wierszy nagłówków tabeli.
+\item Formatowanie i importowanie danych z tabeli do aplikacji w języku Python.
+\item Eksportowanie tabeli do pliku o formacie \emph{CSV}.
+\end{enumerate}
+
+Dzięki przeprowadzeniu z powodzeniem wyżej wymienionych kroków, uzyskamy pożądany efekt, którym jest tabela w edytowalnym formacie zapisana w osobnym pliku.
+
+\chapter{Algorytmy}
+
+\section{Odczytywanie zawartości pliku \emph{PDF}}
+\section{Rozpoznawanie linii separatorów i siatek}
+\section{Lokalizowanie obszarów z tabelami w dokumencie}
+\section{Określanie struktury wierszy i kolumn tabeli}
+\section{Określanie wierszy nagłówków tabeli}
+\section{Formatowanie i importowanie danych z tabeli do aplikacji w języku Python}
+\section{Eksportowanie tabeli do pliku o formacie \emph{CSV}}
 
 \chapter{Badanie istniejących rozwiązań} 
 
@@ -764,7 +821,7 @@ i stron www \cite{bib:internet}.
 
 Równania powinny być numerowane
 \begin{align}
-y = \frac{\partial x}{\partial t}
+punkt = \frac{1}{72} cala = \frac{25.4}{72} mm = 0.3527(7) mm
 \end{align}
 %
 %\begin{itemize}
@@ -934,12 +991,9 @@ y = \frac{\partial x}{\partial t}
 \chapter{Spis skrótów i symboli}
 
 \begin{itemize}
-\item[DNA] kwas deoksyrybonukleinowy (ang. \english{deoxyribonucleic acid})
-\item[MVC] model -- widok -- kontroler (ang. \english{model--view--controller}) 
-\item[$N$] liczebność zbioru danych
-\item[$\mu$] stopnień przyleżności do zbioru
-\item[$\mathbb{E}$] zbiór krawędzi grafu
-\item[$\mathcal{L}$] transformata Laplace'a 
+\item[PDF] kwas deoksyrybonukleinowy (ang. \english{deoxyribonucleic acid})
+\item[CSV] model -- widok -- kontroler (ang. \english{model--view--controller}) 
+
 \end{itemize}
 
 % TODO
