@@ -23,29 +23,29 @@ Reallocating 'singl_function' (item size: 4) to 100 items.
 Database file #1: main-blx.bib
 Database file #2: biblio.bib
 Warning--I didn't find a database entry for "Hurst"
-Biblatex version: 3.18
+Biblatex version: 3.19
 Reallocating 'wiz_functions' (item size: 4) to 9000 items.
 Reallocating 'singl_function' (item size: 4) to 100 items.
 You've used 11 entries,
             6399 wiz_defined-function locations,
-            1261 strings with 10092 characters,
-and the built_in function-call counts, 72231 in all, are:
-= -- 4707
+            1261 strings with 10094 characters,
+and the built_in function-call counts, 72243 in all, are:
+= -- 4708
 > -- 2770
 < -- 391
 + -- 3091
 - -- 1842
-* -- 4636
-:= -- 8570
+* -- 4637
+:= -- 8572
 add.period$ -- 0
 call.type$ -- 11
 change.case$ -- 112
 chr.to.int$ -- 188
 cite$ -- 20
 duplicate$ -- 7050
-empty$ -- 5962
+empty$ -- 5963
 format.name$ -- 644
-if$ -- 13681
+if$ -- 13684
 int.to.chr$ -- 0
 int.to.str$ -- 30
 missing$ -- 0
@@ -55,9 +55,9 @@ pop$ -- 3516
 preamble$ -- 1
 purify$ -- 153
 quote$ -- 0
-skip$ -- 2019
+skip$ -- 2020
 stack$ -- 0
-substring$ -- 8544
+substring$ -- 8547
 swap$ -- 1532
 text.length$ -- 368
 text.prefix$ -- 10

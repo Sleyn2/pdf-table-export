@@ -675,7 +675,30 @@ Dzięki przeprowadzeniu z powodzeniem wyżej wymienionych kroków, uzyskamy poż
 \chapter{Algorytmy}
 
 \section{Odczytywanie zawartości pliku \emph{PDF}}
+
+Ponieważ tekst w danej pracy jest eksportowany przez zewnętrzną bibliotekę, nie jest wymagane dalsze jej omówienie. Biblioteka pdfminer jest jednym z najczęściej wykorzystywanych narzędzi w celu ekstrakcji danych z plików \emph{PDF}.
+
 \section{Rozpoznawanie linii separatorów i siatek}
+
+Bez informacji o liniach i obszarach prostokątnych na stronie \emph{PDF}, poprawne zdefiniowanie komórek byłoby w większości przypadków zadaniem niemal niemożliwym. Dlatego kolejnym algorytmem jest wykrywanie jedynych dwóch rodzajów linii separujących, które mogą wystąpić w tym formacie. Są to proste linie pionowe i proste linie poziome, z powodu na rzadkie wykorzystanie innych linii jako separatory, linie krzywe i skośne nie są brane pod uwagę. Pierwszym krokiem jest analiza pikseli obrazu w skali szarości, następnie algorytm porównuje sąsiednie piksele od lewego górnego rogu strony, kierując się w dół, szukając różnic intensywności powyżej określonego progu. Po znalezieniu pary pikseli o wystarczającej różnicy, algorytm analizuje sąsiednie piksele po prawej stronie od znalezionej pary. Pozwala to na wyznaczenie lewego i prawego brzegu obiektu, a następnie zarejestrowanie go jako linię poziomą. Graficzne przedstawienie przebiegu algorytmu znajduje się na rysunku 3.1 poniżej.
+
+\begin{figure}
+\centering
+\includegraphics[width=0.5\textwidth]{./images/line_detection.png}
+\caption{Graficzna reprezentacja algorytmu detekcji linii poziomych. Algorytm analizuje kolejne piksele od lewego górnego rogu w dół (1), porównując sąsiadujące pionowo piksele. Gdy osiągnie dolną krawędź strony, algorytm przechodzi do kolejnej kolumny pikseli(2). Kiedy znaleziona zostanie kontrastująca para pikseli(3), algorytm przechodzi wzdłuż krawędzi w prawo(4), zatrzymując się przy zakończeniu krawędzi(nie widnieje na grafice), następnie algorytm kontynuuje od pierwszego punktu w dół, poszukując kolejnej krawędzi pionowej.}
+\label{fig:pdf_logo}
+\end{figure}
+
+W przypadku linii pionowych, algorytm wykonuje swoją pracę analogicznie, jednak początkowym jego zadaniem jest określenie szerokości oraz wysokości tabeli, a dopiero następnie analizuje on konkretne rozłożenie jej komórek. Algorytm posiada określony kontrast, który jest wymagany do wykrycia linii, wymaganą grubość oraz długość linii, dlatego nie dla każdego przypadku przy wykorzystaniu ustawień ogólnych zostanie uzyskany oczekiwany rezultat. Określenie takich limitów dla detekcji linii jest również niezbędne dla sytuacji kiedy czcionka ma małe odstępy i algorytm mógłby rozpoznać sąsiadujące litery jako linię poziomą(rys. 3.2), lub kiedy użyta zostanie duża czcionka wraz z literami posiadającymi długie linie, takimi jak znaki "q", "l", "p", itp.
+
+\begin{figure}
+\centering
+\includegraphics[width=0.5\textwidth]{./images/caligraphy.png}
+\caption{W przypadku niektórych czcionek istnieje możliwość wykrycia błędnej linii poziomej lub pionowej, zwłaszcza przy plikach w niższej rozdzielczości}
+\label{fig:pdf_logo}
+\end{figure}
+
+
 \section{Lokalizowanie obszarów z tabelami w dokumencie}
 \section{Określanie struktury wierszy i kolumn tabeli}
 \section{Określanie wierszy nagłówków tabeli}
