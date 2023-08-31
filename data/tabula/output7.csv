@@ -1,0 +1,8 @@
+lp,Nazwa towaru lub us³ugi,PKWiU,Jm,Iloœæ,Cena,Stawka,Wart. netto,Wart. VAT,Wart. Brutto
+"",,,,,netto,VAT,,,
+1,Z³om stalowy,,Mg,"1,500","800,00",-*,"1 200,00",-*,"1 200,00"
+2,Zu¿yte akumulatory,,Mg,"0,500","8 000,00",23%,"4 000,00","920,00","4 920,00"
+w tym,Wart. Netto,Wart. VAT,Wart. Brutto
+-*,"1 200,00",-*,"1200,00"
+23%,"4 000,00","920,00","4 920,00"
+RAZEM,"5 200,00","920,00","6 120,00"

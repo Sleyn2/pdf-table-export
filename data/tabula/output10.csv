@@ -1,0 +1,20 @@
+Poz.,Nazwa towaru/us³ugi,Symbol,Jm,Iloœæ,Cena,Wartoœæ,Stawk,Kwota VAT,Wartoœæ
+Faktury,,PKWiU/,,,jednostko,netto,a VAT,,brutto
+"",,PKOB,,,wa netto,,[%],,
+1,wózek inwalidzki Quickie Helnium,,szt,1,"11 111,11","11 111,11",8,"888,89","12 000,00"
+2,,,szt,,,,,,
+3,,,szt,,,,,,
+4,,,szt,,,,,,
+5,,,szt,,,,,,
+6,,,szt,,,,,,
+7,,,szt,,,,,,
+8,,,szt,,,,,,
+9,,,szt,,,,,,
+10,,,szt,,,,,,
+azem,,,,
+"","11 111,11",X,"888,89","12 000,00"
+w tym,"0,00",23,"0,00","0,00"
+"","11 111,11",8,"888,89","12 000,00"
+"","0,00",5,"0,00","0,00"
+"","0,00",0,"0,00","0,00"
+"","0,00",zw,"0,00","0,00"

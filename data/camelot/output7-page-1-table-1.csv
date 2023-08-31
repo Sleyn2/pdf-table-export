@@ -1,0 +1,5 @@
+"lp","Nazwa towaru lub usługi","PKWiU","Jm","Ilość","Cena 
+netto","Stawka 
+VAT","Wart. netto","Wart. VAT","Wart. Brutto"
+"1","Złom stalowy","","Mg","1,500","800,00","-*","1 200,00","-*","1 200,00"
+"2","Zużyte akumulatory","","Mg","0,500","8 000,00","23%","4 000,00","920,00","4 920,00"
