@@ -375,7 +375,6 @@ class Table(object):
         return table_arr
 
 
-TABLE_STRATEGIES = ["lines", "lines_strict", "text", "explicit"]
 NON_NEGATIVE_SETTINGS = [
     "snap_tolerance",
     "snap_x_tolerance",
@@ -426,11 +425,6 @@ class TableSettings:
 
         for orientation in ["horizontal", "vertical"]:
             strategy = getattr(self, orientation + "_strategy")
-            if strategy not in TABLE_STRATEGIES:
-                raise ValueError(
-                    f"{orientation}_strategy must be one of"
-                    f'{{{",".join(TABLE_STRATEGIES)}}}'
-                )
 
         if self.text_settings is None:
             self.text_settings = {}
@@ -508,12 +502,6 @@ class TableFinder(object):
                         f"floats/ints."
                     )
 
-        v_strat = settings.vertical_strategy
-        h_strat = settings.horizontal_strategy
-
-        if v_strat == "text" or h_strat == "text":
-            words = self.page.extract_words(**(settings.text_settings or {}))
-
         v_explicit = []
         for desc in settings.explicit_vertical_lines or []:
             if isinstance(desc, dict):
@@ -532,10 +520,7 @@ class TableFinder(object):
                     }
                 )
 
-        if v_strat == "lines":
-            v_base = utils.geometry.filter_edges(self.page.edges, "v")
-        elif v_strat == "lines_strict":
-            v_base = utils.geometry.filter_edges(self.page.edges, "v", edge_type="line")
+        v_base = utils.geometry.filter_edges(self.page.edges, "v")
 
         v = v_base + v_explicit
 
@@ -557,16 +542,7 @@ class TableFinder(object):
                     }
                 )
 
-        if h_strat == "lines":
-            h_base = utils.geometry.filter_edges(self.page.edges, "h")
-        elif h_strat == "lines_strict":
-            h_base = utils.geometry.filter_edges(self.page.edges, "h", edge_type="line")
-        elif h_strat == "text":
-            h_base = words_to_edges_h(
-                words, word_threshold=settings.min_words_horizontal
-            )
-        elif h_strat == "explicit":
-            h_base = []
+        h_base = utils.geometry.filter_edges(self.page.edges, "h")
 
         h = h_base + h_explicit
 
