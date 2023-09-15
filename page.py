@@ -8,7 +8,6 @@ from typing import (
     Generator,
     List,
     Optional,
-    Pattern,
     Tuple,
     Union,
 )
@@ -24,7 +23,6 @@ from pdfminer.layout import (
 )
 from pdfminer.pdfinterp import PDFPageInterpreter
 from pdfminer.pdfpage import PDFPage
-from pdfminer.psparser import PSLiteral
 
 import utils
 from container import Container
@@ -35,7 +33,7 @@ from utils.text import TextMap
 T_num = Union[int, float]
 T_bbox = Tuple[T_num, T_num, T_num, T_num]
 T_obj = Dict[str, Any]
-T_obj_list = List[T_obj]
+List_T_obj = List[T_obj]
 
 lt_pat = re.compile(r"^LT")
 
@@ -67,40 +65,17 @@ ALL_ATTRS = set(
 )
 
 
-if TYPE_CHECKING:  # pragma: nocover
-    from pdf import PDF
-
-CP936_FONTNAMES = {
-    b"\xcb\xce\xcc\xe5": "SimSun,Regular",
-    b"\xba\xda\xcc\xe5": "SimHei,Regular",
-    b"\xbf\xac\xcc\xe5_GB2312": "SimKai,Regular",
-    b"\xb7\xc2\xcb\xce_GB2312": "SimFang,Regular",
-    b"\xc1\xa5\xca\xe9": "SimLi,Regular",
-}
-
-
-def fix_fontname_bytes(fontname: bytes) -> str:
-    if b"+" in fontname:
-        split_at = fontname.index(b"+") + 1
-        prefix, suffix = fontname[:split_at], fontname[split_at:]
-    else:
-        prefix, suffix = b"", fontname
-
-    suffix_new = CP936_FONTNAMES.get(suffix, str(suffix)[2:-1])
-    return str(prefix)[2:-1] + suffix_new
-
-
 class Page(Container):
     cached_properties: List[str] = Container.cached_properties + ["_layout"]
     is_original: bool = True
     pages = None
 
     def __init__(
-        self,
-        pdf: "PDF",
-        page_obj: PDFPage,
-        page_number: int,
-        initial_doctop: T_num = 0,
+            self,
+            pdf: "PDF",
+            page_obj: PDFPage,
+            page_number: int,
+            initial_doctop: T_num = 0,
     ):
         self.pdf = pdf
         self.root_page = self
@@ -133,9 +108,7 @@ class Page(Container):
                 max(m[1], m[3]),
             )
         )
-
-        # https://rednafi.github.io/reflections/dont-wrap-instance-methods-with-functoolslru_cache-decorator-in-python.html
-        self.get_textmap = lru_cache()(self._get_textmap)
+        self.get_textmap = lru_cache()(self.get_textmap)
 
     @property
     def width(self) -> T_num:
@@ -159,14 +132,14 @@ class Page(Container):
         return self._layout
 
     @property
-    def obj(self) -> Dict[str, T_obj_list]:
+    def obj(self) -> Dict[str, List_T_obj]:
         if hasattr(self, "_objects"):
             return self._objects
-        self._objects: Dict[str, T_obj_list] = self.parse_objects()
+        self._objects: Dict[str, List_T_obj] = self.parse_objects()
         return self._objects
 
     def point2coord(self, pt: Tuple[T_num, T_num]) -> Tuple[T_num, T_num]:
-        return (pt[0], self.height - pt[1])
+        return pt[0], self.height - pt[1]
 
     def process_object(self, obj: LTItem) -> T_obj:
         kind = re.sub(lt_pat, "", obj.__class__.__name__).lower()
@@ -175,7 +148,7 @@ class Page(Container):
             k, v = item
             if k in ALL_ATTRS:
                 res = resolve_all(v)
-                return (k, res)
+                return k, res
             else:
                 return None
 
@@ -202,19 +175,19 @@ class Page(Container):
         return attr
 
     def iter_layout_objects(
-        self, layout_objects: List[LTComponent]
+            self, layout_objects: List[LTComponent]
     ) -> Generator[T_obj, None, None]:
         for obj in layout_objects:
             if isinstance(obj, LTContainer):
                 if self.pdf.laparams is not None:
                     yield self.process_object(obj)
-                yield from self.iter_layout_objects(obj._objs)
+                yield from self.iter_layout_objects(obj.objs)
             else:
                 yield self.process_object(obj)
 
-    def parse_objects(self) -> Dict[str, T_obj_list]:
-        objects: Dict[str, T_obj_list] = {}
-        for obj in self.iter_layout_objects(self.layout._objs):
+    def parse_objects(self) -> Dict[str, List_T_obj]:
+        objects: Dict[str, List_T_obj] = {}
+        for obj in self.iter_layout_objects(self.layout.objs):
             kind = obj["object_type"]
             if kind in ["anno"]:
                 continue
@@ -224,13 +197,13 @@ class Page(Container):
         return objects
 
     def find_tables(
-        self, table_settings: Optional[T_table_settings] = None
+            self, table_settings: Optional[T_table_settings] = None
     ) -> List[Table]:
         tset = TableSettings.resolve(table_settings)
         return TableFinder(self, tset).tables
 
     def find_table(
-        self, table_settings: Optional[T_table_settings] = None
+            self, table_settings: Optional[T_table_settings] = None
     ) -> Optional[Table]:
         tset = TableSettings.resolve(table_settings)
         tables = self.find_tables(tset)
@@ -240,21 +213,14 @@ class Page(Container):
 
         # Return the largest table, as measured by number of cells.
         def sorter(x: Table) -> Tuple[int, T_num, T_num]:
-            return (-len(x.cells), x.bbox[1], x.bbox[0])
+            return -len(x.cells), x.bbox[1], x.bbox[0]
 
         largest = list(sorted(tables, key=sorter))[0]
 
         return largest
 
-    def extract_tables(
-        self, table_settings: Optional[T_table_settings] = None
-    ) -> List[List[List[Optional[str]]]]:
-        tset = TableSettings.resolve(table_settings)
-        tables = self.find_tables(tset)
-        return [table.extract(**(tset.text_settings or {})) for table in tables]
-
     def extract_table(
-        self, table_settings: Optional[T_table_settings] = None
+            self, table_settings: Optional[T_table_settings] = None
     ) -> Optional[List[List[Optional[str]]]]:
         tset = TableSettings.resolve(table_settings)
         table = self.find_table(tset)
@@ -263,7 +229,7 @@ class Page(Container):
         else:
             return table.extract(**(tset.text_settings or {}))
 
-    def _get_textmap(self, **kwargs: Any) -> TextMap:
+    def get_textmap(self, **kwargs: Any) -> TextMap:
         defaults = dict(x_shift=self.bbox[0], y_shift=self.bbox[1])
         if "layout_width_chars" not in kwargs:
             defaults.update({"layout_width": self.width})
@@ -278,53 +244,20 @@ class Page(Container):
     def extract_text_simple(self, **kwargs: Any) -> str:
         return utils.extract_text_simple(self.chars, **kwargs)
 
-    def extract_words(self, **kwargs: Any) -> T_obj_list:
+    def extract_words(self, **kwargs: Any) -> List_T_obj:
         return utils.text.extract_words(self.chars, **kwargs)
 
     def extract_text_lines(
-        self, strip: bool = True, return_chars: bool = True, **kwargs: Any
-    ) -> T_obj_list:
-        return self.get_textmap(**kwargs).extract_text_lines(
+            self, strip: bool = True, return_chars: bool = True, **kwargs: Any
+    ) -> List_T_obj:
+        return self.get_textmap(**kwargs).get_lines_txt(
             strip=strip, return_chars=return_chars
         )
 
     def crop(
-        self, bbox: T_bbox, relative: bool = False, strict: bool = True
+            self, bbox: T_bbox, relative: bool = False, strict: bool = True
     ) -> "CroppedPage":
         return CroppedPage(self, bbox, relative=relative, strict=strict)
-
-    def within_bbox(
-        self, bbox: T_bbox, relative: bool = False, strict: bool = True
-    ) -> "CroppedPage":
-        """
-        Same as .crop, except only includes objects fully within the bbox
-        """
-        return CroppedPage(
-            self, bbox, relative=relative, strict=strict, crop_fn=utils.within_bbox
-        )
-
-    def outside_bbox(
-        self, bbox: T_bbox, relative: bool = False, strict: bool = True
-    ) -> "CroppedPage":
-        """
-        Same as .crop, except only includes objects fully within the bbox
-        """
-        return CroppedPage(
-            self, bbox, relative=relative, strict=strict, crop_fn=utils.outside_bbox
-        )
-
-    def filter(self, test_function: Callable[[T_obj], bool]) -> "FilteredPage":
-        return FilteredPage(self, test_function)
-
-    def dedupe_chars(self, **kwargs: Any) -> "FilteredPage":
-        """
-        Removes duplicate chars — those sharing the same text, fontname, size,
-        and positioning (within `tolerance`) as other characters on the page.
-        """
-        p = FilteredPage(self, lambda x: True)
-        p._objects = {kind: objs for kind, objs in self.obj.items()}
-        p._objects["char"] = utils.dedupe_chars(self.chars, **kwargs)
-        return p
 
     def to_dict(self, object_types: Optional[List[str]] = None) -> Dict[str, Any]:
         if object_types is None:
@@ -359,7 +292,7 @@ class DerivedPage(Page):
         self.page_obj = parent_page.page_obj
         self.page_number = parent_page.page_number
         self.flush_cache(Container.cached_properties)
-        self.get_textmap = lru_cache()(self._get_textmap)
+        self.get_textmap = lru_cache()(self.get_textmap)
 
 
 def test_proposed_bbox(bbox: T_bbox, parent_bbox: T_bbox) -> None:
@@ -384,12 +317,12 @@ def test_proposed_bbox(bbox: T_bbox, parent_bbox: T_bbox) -> None:
 
 class CroppedPage(DerivedPage):
     def __init__(
-        self,
-        parent_page: Page,
-        crop_bbox: T_bbox,
-        crop_fn: Callable[[T_obj_list, T_bbox], T_obj_list] = utils.geometry.crop_to_bbox,
-        relative: bool = False,
-        strict: bool = True,
+            self,
+            parent_page: Page,
+            crop_bbox: T_bbox,
+            crop_fn: Callable[[List_T_obj, T_bbox], List_T_obj] = utils.geometry.crop_to_bbox,
+            relative: bool = False,
+            strict: bool = True,
     ):
         if relative:
             o_x0, o_top, _, _ = parent_page.bbox
@@ -399,7 +332,7 @@ class CroppedPage(DerivedPage):
         if strict:
             test_proposed_bbox(crop_bbox, parent_page.bbox)
 
-        def _crop_fn(objs: T_obj_list) -> T_obj_list:
+        def _crop_fn(objs: List_T_obj) -> List_T_obj:
             return crop_fn(objs, crop_bbox)
 
         super().__init__(parent_page)
@@ -413,10 +346,10 @@ class CroppedPage(DerivedPage):
             self.bbox = crop_bbox
 
     @property
-    def obj(self) -> Dict[str, T_obj_list]:
+    def obj(self) -> Dict[str, List_T_obj]:
         if hasattr(self, "_objects"):
             return self._objects
-        self._objects: Dict[str, T_obj_list] = {
+        self._objects: Dict[str, List_T_obj] = {
             k: self._crop_fn(v) for k, v in self.parent_page.obj.items()
         }
         return self._objects
@@ -429,10 +362,10 @@ class FilteredPage(DerivedPage):
         super().__init__(parent_page)
 
     @property
-    def obj(self) -> Dict[str, T_obj_list]:
+    def obj(self) -> Dict[str, List_T_obj]:
         if hasattr(self, "_objects"):
             return self._objects
-        self._objects: Dict[str, T_obj_list] = {
+        self._objects: Dict[str, List_T_obj] = {
             k: list(filter(self.filter_fn, v))
             for k, v in self.parent_page.obj.items()
         }

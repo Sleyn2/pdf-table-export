@@ -18,8 +18,8 @@ T_num = Union[int, float]
 T_point = Tuple[T_num, T_num]
 T_bbox = Tuple[T_num, T_num, T_num, T_num]
 T_obj = Dict[str, Any]
-T_obj_list = List[T_obj]
-T_obj_iter = Iterable[T_obj]
+List_T_obj = List[T_obj]
+Iter_T_obj = Iterable[T_obj]
 
 
 class PDF(Container):
@@ -52,7 +52,6 @@ class PDF(Container):
             path_or_fp: Union[str, pathlib.Path, BufferedReader, BytesIO],
             pages: Optional[Union[List[int], Tuple[int]]] = None,
             password: Optional[str] = None,
-            repair: bool = False,
     ) -> "PDF":
 
         stream: Union[str, pathlib.Path, BufferedReader, BytesIO]
@@ -110,14 +109,14 @@ class PDF(Container):
         return self._pages
 
     @property
-    def obj(self) -> Dict[str, T_obj_list]:
+    def obj(self) -> Dict[str, List_T_obj]:
         if hasattr(self, "_objects"):
             return self._objects
-        all_objects: Dict[str, T_obj_list] = {}
+        all_objects: Dict[str, List_T_obj] = {}
         for p in self.pages:
             for kind in p.obj.keys():
                 all_objects[kind] = all_objects.get(kind, []) + p.obj[kind]
-        self._objects: Dict[str, T_obj_list] = all_objects
+        self._objects: Dict[str, List_T_obj] = all_objects
         return self._objects
 
     def to_dict(self, object_types: Optional[List[str]] = None) -> Dict[str, Any]:

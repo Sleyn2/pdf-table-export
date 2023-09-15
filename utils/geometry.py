@@ -8,10 +8,10 @@ from utils.generic import to_list
 T_num = Union[int, float]
 T_bbox = Tuple[T_num, T_num, T_num, T_num]
 T_obj = Dict[str, Any]
-T_obj_list = List[T_obj]
+List_T_obj = List[T_obj]
 
 
-def objects_to_rect(objects: T_obj_list) -> Dict[str, T_num]:
+def objects_to_rect(objects: List_T_obj) -> Dict[str, T_num]:
     return {
         "x0": min(map(itemgetter("x0"), objects)),
         "x1": max(map(itemgetter("x1"), objects)),
@@ -20,7 +20,7 @@ def objects_to_rect(objects: T_obj_list) -> Dict[str, T_num]:
     }
 
 
-def objects_to_bbox(objects: T_obj_list) -> T_bbox:
+def objects_to_bbox(objects: List_T_obj) -> T_bbox:
     return (
         min(map(itemgetter("x0"), objects)),
         min(map(itemgetter("top"), objects)),
@@ -90,16 +90,16 @@ def clip_obj(obj: T_obj, bbox: T_bbox) -> Optional[T_obj]:
     return copy
 
 
-def intersects_bbox(objs: T_obj_list, bbox: T_bbox) -> T_obj_list:
-    initial_type = type(objs)
-    objs = to_list(objs)
+def intersections_bbox(objects: List_T_obj, bbox: T_bbox) -> List_T_obj:
+    initial_type = type(objects)
+    objects = to_list(objects)
     matching = [
-        obj for obj in objs if get_bbox_overlap(obj_to_bbox(obj), bbox) is not None
+        obj for obj in objects if get_bbox_overlap(obj_to_bbox(obj), bbox) is not None
     ]
     return initial_type(matching)
 
 
-def within_bbox(objs: T_obj_list, bbox: T_bbox) -> T_obj_list:
+def inside_bbox(objs: List_T_obj, bbox: T_bbox) -> List_T_obj:
     return [
         obj
         for obj in objs
@@ -107,11 +107,11 @@ def within_bbox(objs: T_obj_list, bbox: T_bbox) -> T_obj_list:
     ]
 
 
-def outside_bbox(objs: T_obj_list, bbox: T_bbox) -> T_obj_list:
+def outside_bbox(objs: List_T_obj, bbox: T_bbox) -> List_T_obj:
     return [obj for obj in objs if get_bbox_overlap(obj_to_bbox(obj), bbox) is None]
 
 
-def crop_to_bbox(objs: T_obj_list, bbox: T_bbox) -> T_obj_list:
+def crop_to_bbox(objs: List_T_obj, bbox: T_bbox) -> List_T_obj:
     return list(filter(None, (clip_obj(obj, bbox) for obj in objs)))
 
 
@@ -137,15 +137,15 @@ def move_object(obj: T_obj, axis: str, value: T_num) -> T_obj:
     return obj.__class__(tuple(obj.items()) + tuple(new_items))
 
 
-def snap_objects(objs: T_obj_list, attr: str, tolerance: T_num) -> T_obj_list:
-    axis = {"x0": "h", "x1": "h", "top": "v", "bottom": "v"}[attr]
-    clust = clust_obj(objs, itemgetter(attr), tolerance)
-    avg = [sum(map(itemgetter(attr), objs)) / len(objs) for objs in clust]
-    snap_clust = [
-        [move_object(obj, axis, avg - obj[attr]) for obj in cluster]
-        for cluster, avg in zip(clust, avg)
+def snap_obj(objs: List_T_obj, attr: str, tolerance: T_num) -> List_T_obj:
+    ax = {"x0": "h", "x1": "h", "top": "v", "bottom": "v"}[attr]
+    cluster_object = clust_obj(objs, itemgetter(attr), tolerance)
+    average = [sum(map(itemgetter(attr), objs)) / len(objs) for objs in cluster_object]
+    snap = [
+        [move_object(obj, ax, avg - obj[attr]) for obj in cluster]
+        for cluster, avg in zip(cluster_object, average)
     ]
-    return list(itertools.chain(*snap_clust))
+    return list(itertools.chain(*snap))
 
 
 def resize_object(obj: T_obj, key: str, value: T_num) -> T_obj:
@@ -175,7 +175,7 @@ def resize_object(obj: T_obj, key: str, value: T_num) -> T_obj:
     return obj.__class__(tuple(obj.items()) + tuple(new_items))
 
 
-def curve_to_edges(curve: T_obj) -> T_obj_list:
+def curve_to_edges(curve: T_obj) -> List_T_obj:
     point_pairs = zip(curve["pts"], curve["pts"][1:])
     return [
         {
@@ -193,7 +193,7 @@ def curve_to_edges(curve: T_obj) -> T_obj_list:
     ]
 
 
-def rect_to_edges(rect: T_obj) -> T_obj_list:
+def rect_to_edges(rect: T_obj) -> List_T_obj:
     top, bottom, left, right = [dict(rect) for x in range(4)]
     top.update(
         {
@@ -239,7 +239,7 @@ def line_to_edge(line: T_obj) -> T_obj:
     return edge
 
 
-def obj_to_edges(obj: T_obj) -> T_obj_list:
+def obj_to_edges(obj: T_obj) -> List_T_obj:
     t = obj["object_type"]
     if "_edge" in t:
         return [obj]
@@ -250,11 +250,11 @@ def obj_to_edges(obj: T_obj) -> T_obj_list:
 
 
 def filter_edges(
-        edges: T_obj_list,
+        edges: List_T_obj,
         orientation: Optional[str] = None,
         edge_type: Optional[str] = None,
         min_length: T_num = 1,
-) -> T_obj_list:
+) -> List_T_obj:
     if orientation not in ("v", "h", None):
         raise ValueError("Orientation must be 'v' or 'h'")
 

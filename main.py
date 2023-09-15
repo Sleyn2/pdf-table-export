@@ -3,7 +3,7 @@ import pandas as pd
 import camelot
 import tabula
 
-index: int = 14
+index: int = 4
 input_path = 'data/example-' + str(index) + '.pdf'
 output_path_test = 'data/test/output' + str(index) + '.csv'
 output_path_tabula = 'data/tabula/output' + str(index) + '.csv'

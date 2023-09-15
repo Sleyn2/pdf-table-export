@@ -4,7 +4,7 @@ from typing import Any, Dict, List, Optional
 from utils.geometry import rect_to_edges, line_to_edge, curve_to_edges
 
 T_obj = Dict[str, Any]
-T_obj_list = List[T_obj]
+List_T_obj = List[T_obj]
 
 
 class Container(object):
@@ -15,74 +15,74 @@ class Container(object):
         ...  # pragma: nocover
 
     @property
-    def obj(self) -> Dict[str, T_obj_list]:
+    def obj(self) -> Dict[str, List_T_obj]:
         ...  # pragma: nocover
 
     @property
-    def rectangles(self) -> T_obj_list:
+    def rectangles(self) -> List_T_obj:
         return self.obj.get("rect", [])
 
     @property
-    def lines(self) -> T_obj_list:
+    def lines(self) -> List_T_obj:
         return self.obj.get("line", [])
 
     @property
-    def curves(self) -> T_obj_list:
+    def curves(self) -> List_T_obj:
         return self.obj.get("curve", [])
 
     @property
-    def chars(self) -> T_obj_list:
+    def chars(self) -> List_T_obj:
         return self.obj.get("char", [])
 
     @property
-    def boxvertical(self) -> T_obj_list:
+    def boxvertical(self) -> List_T_obj:
         return self.obj.get("boxvertical", [])
 
     @property
-    def boxhorizontal(self) -> T_obj_list:
+    def boxhorizontal(self) -> List_T_obj:
         return self.obj.get("boxhorizontal", [])
 
     @property
-    def textvertical(self) -> T_obj_list:
+    def textvertical(self) -> List_T_obj:
         return self.obj.get("textvertical", [])
 
     @property
-    def texthorizontal(self) -> T_obj_list:
+    def texthorizontal(self) -> List_T_obj:
         return self.obj.get("texthorizontal", [])
 
     @property
-    def rect_edges(self) -> T_obj_list:
+    def rect_edges(self) -> List_T_obj:
         if hasattr(self, "_rect_edges"):
             return self._rect_edges
         rect_edges_gen = (rect_to_edges(r) for r in self.rectangles)
-        self._rect_edges: T_obj_list = list(chain(*rect_edges_gen))
+        self._rect_edges: List_T_obj = list(chain(*rect_edges_gen))
         return self._rect_edges
 
     @property
-    def curve_edges(self) -> T_obj_list:
+    def curve_edges(self) -> List_T_obj:
         if hasattr(self, "_curve_edges"):
             return self._curve_edges
         curve_edges_gen = (curve_to_edges(r) for r in self.curves)
-        self._curve_edges: T_obj_list = list(chain(*curve_edges_gen))
+        self._curve_edges: List_T_obj = list(chain(*curve_edges_gen))
         return self._curve_edges
 
     @property
-    def edges(self) -> T_obj_list:
+    def edges(self) -> List_T_obj:
         if hasattr(self, "_edges"):
             return self._edges
         line_edges = list(map(line_to_edge, self.lines))
-        self._edges: T_obj_list = line_edges + self.rect_edges + self.curve_edges
+        self._edges: List_T_obj = line_edges + self.rect_edges + self.curve_edges
         return self._edges
 
     @property
-    def horizontal_edges(self) -> T_obj_list:
+    def horizontal_edges(self) -> List_T_obj:
         def test(x: T_obj) -> bool:
             return bool(x["orientation"] == "h")
 
         return list(filter(test, self.edges))
 
     @property
-    def vertical_edges(self) -> T_obj_list:
+    def vertical_edges(self) -> List_T_obj:
         def test(x: T_obj) -> bool:
             return bool(x["orientation"] == "v")
 

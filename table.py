@@ -9,15 +9,15 @@ T_num = Union[int, float]
 T_point = Tuple[T_num, T_num]
 T_bbox = Tuple[T_num, T_num, T_num, T_num]
 T_obj = Dict[str, Any]
-T_obj_list = List[T_obj]
-T_obj_iter = Iterable[T_obj]
+List_T_obj = List[T_obj]
+Iter_T_obj = Iterable[T_obj]
 
 DEFAULT_SNAP_TOLERANCE = 3
 DEFAULT_JOIN_TOLERANCE = 3
 DEFAULT_MIN_WORDS_VERTICAL = 3
 DEFAULT_MIN_WORDS_HORIZONTAL = 1
 
-T_intersections = Dict[T_point, Dict[str, T_obj_list]]
+T_intersections = Dict[T_point, Dict[str, List_T_obj]]
 T_table_settings = Union["TableSettings", Dict[str, Any]]
 
 if TYPE_CHECKING:  # pragma: nocover
@@ -25,26 +25,22 @@ if TYPE_CHECKING:  # pragma: nocover
 
 
 def snap_edges(
-        edges: T_obj_list,
+        edges: List_T_obj,
         x_tolerance: T_num = DEFAULT_SNAP_TOLERANCE,
         y_tolerance: T_num = DEFAULT_SNAP_TOLERANCE,
-) -> T_obj_list:
-    by_orientation: Dict[str, T_obj_list] = {"v": [], "h": []}
+) -> List_T_obj:
+    by_orientation: Dict[str, List_T_obj] = {"v": [], "h": []}
     for e in edges:
         by_orientation[e["orientation"]].append(e)
 
-    snapped_v = utils.geometry.snap_objects(by_orientation["v"], "x0", x_tolerance)
-    snapped_h = utils.geometry.snap_objects(by_orientation["h"], "top", y_tolerance)
+    snapped_v = utils.geometry.snap_obj(by_orientation["v"], "x0", x_tolerance)
+    snapped_h = utils.geometry.snap_obj(by_orientation["h"], "top", y_tolerance)
     return snapped_v + snapped_h
 
 
 def join_edge_group(
-        edges: T_obj_iter, orientation: str, tolerance: T_num = DEFAULT_JOIN_TOLERANCE
-) -> T_obj_list:
-    """
-    Given a list of edges along the same infinite line, join those that
-    are within `tolerance` pixels of one another.
-    """
+        edges: Iter_T_obj, orientation: str, tolerance: T_num = DEFAULT_JOIN_TOLERANCE
+) -> List_T_obj:
     if orientation == "h":
         min_prop, max_prop = "x0", "x1"
     elif orientation == "v":
@@ -58,32 +54,25 @@ def join_edge_group(
         last = joined[-1]
         if e[min_prop] <= (last[max_prop] + tolerance):
             if e[max_prop] > last[max_prop]:
-                # Extend current edge to new extremity
                 joined[-1] = utils.geometry.resize_object(last, max_prop, e[max_prop])
         else:
-            # Edge is separate from previous edges
             joined.append(e)
 
     return joined
 
 
 def merge_edges(
-        edges: T_obj_list,
+        edges: List_T_obj,
         snap_x_tolerance: T_num,
         snap_y_tolerance: T_num,
         join_x_tolerance: T_num,
         join_y_tolerance: T_num,
-) -> T_obj_list:
-    """
-    Using the `snap_edges` and `join_edge_group` methods above,
-    merge a list of edges into a more "seamless" list.
-    """
-
+) -> List_T_obj:
     def get_group(edge: T_obj) -> Tuple[str, T_num]:
         if edge["orientation"] == "h":
-            return ("h", edge["top"])
+            return "h", edge["top"]
         else:
-            return ("v", edge["x0"])
+            return "v", edge["x0"]
 
     if snap_x_tolerance > 0 or snap_y_tolerance > 0:
         edges = snap_edges(edges, snap_x_tolerance, snap_y_tolerance)
@@ -101,24 +90,19 @@ def merge_edges(
 
 
 def words_to_edges_h(
-        words: T_obj_list, word_threshold: int = DEFAULT_MIN_WORDS_HORIZONTAL
-) -> T_obj_list:
-    """
-    Find (imaginary) horizontal lines that connect the tops
-    of at least `word_threshold` words.
-    """
+        words: List_T_obj, word_threshold: int = DEFAULT_MIN_WORDS_HORIZONTAL
+) -> List_T_obj:
     by_top = utils.clustering.clust_obj(words, itemgetter("top"), 1)
     large_clusters = filter(lambda x: len(x) >= word_threshold, by_top)
-    rects = list(map(utils.geometry.objects_to_rect, large_clusters))
-    if len(rects) == 0:
+    rectangles = list(map(utils.geometry.objects_to_rect, large_clusters))
+    if len(rectangles) == 0:
         return []
-    min_x0 = min(map(itemgetter("x0"), rects))
-    max_x1 = max(map(itemgetter("x1"), rects))
+    min_x0 = min(map(itemgetter("x0"), rectangles))
+    max_x1 = max(map(itemgetter("x1"), rectangles))
 
     edges = []
-    for r in rects:
+    for r in rectangles:
         edges += [
-            # Top of text
             {
                 "x0": min_x0,
                 "x1": max_x1,
@@ -127,9 +111,6 @@ def words_to_edges_h(
                 "width": max_x1 - min_x0,
                 "orientation": "h",
             },
-            # For each detected row, we also add the 'bottom' line.  This will
-            # generate extra edges, (some will be redundant with the next row
-            # 'top' line), but this catches the last row of every table.
             {
                 "x0": min_x0,
                 "x1": max_x1,
@@ -144,9 +125,8 @@ def words_to_edges_h(
 
 
 def words_to_edges_v(
-        words: T_obj_list, word_threshold: int = DEFAULT_MIN_WORDS_VERTICAL
-) -> T_obj_list:
-    # Find words that share the same left, right, or centerpoints
+        words: List_T_obj, word_threshold: int = DEFAULT_MIN_WORDS_VERTICAL
+) -> List_T_obj:
     by_x0 = utils.clustering.clust_obj(words, itemgetter("x0"), 1)
     by_x1 = utils.clustering.clust_obj(words, itemgetter("x1"), 1)
 
@@ -156,14 +136,11 @@ def words_to_edges_v(
     by_center = utils.clustering.clust_obj(words, get_center, 1)
     clusters = by_x0 + by_x1 + by_center
 
-    # Find the points that align with the most words
     sorted_clusters = sorted(clusters, key=lambda x: -len(x))
     large_clusters = filter(lambda x: len(x) >= word_threshold, sorted_clusters)
 
-    # For each of those points, find the bboxes fitting all matching words
     bboxes = list(map(utils.geometry.objects_to_bbox, large_clusters))
 
-    # Iterate through those bboxes, condensing overlapping bboxes
     condensed_bboxes: List[T_bbox] = []
     for bbox in bboxes:
         overlap = any(utils.geometry.get_bbox_overlap(bbox, c) for c in condensed_bboxes)
@@ -203,12 +180,8 @@ def words_to_edges_v(
 
 
 def edges_to_intersections(
-        edges: T_obj_list, x_tolerance: T_num = 1, y_tolerance: T_num = 1
+        edges: List_T_obj, x_tolerance: T_num = 1, y_tolerance: T_num = 1
 ) -> T_intersections:
-    """
-    Given a list of edges, return the points at which they intersect
-    within `tolerance` pixels.
-    """
     intersections: T_intersections = {}
     v_edges, h_edges = [
         list(filter(lambda x: x["orientation"] == o, edges)) for o in ("v", "h")
@@ -231,7 +204,7 @@ def edges_to_intersections(
 
 def intersections_to_cells(intersections: T_intersections) -> List[T_bbox]:
     def e_connections(p1: T_point, p2: T_point) -> bool:
-        def edges_to_set(edges: T_obj_list) -> Set[T_bbox]:
+        def edges_to_set(edges: List_T_obj) -> Set[T_bbox]:
             return set(map(utils.geometry.obj_to_bbox, edges))
 
         if p1[0] == p2[0]:
@@ -257,7 +230,6 @@ def intersections_to_cells(intersections: T_intersections) -> List[T_bbox]:
             return None
         pt = points[i]
         rest = points[i + 1:]
-        # Get all the points directly below and directly right
         below = [x for x in rest if x[0] == pt[0]]
         right = [x for x in rest if x[1] == pt[1]]
         for bpt in below:
@@ -275,7 +247,7 @@ def intersections_to_cells(intersections: T_intersections) -> List[T_bbox]:
                         and e_connections(corner, rpt)
                         and e_connections(corner, bpt)
                 ):
-                    return (pt[0], pt[1], corner[0], corner[1])
+                    return pt[0], pt[1], corner[0], corner[1]
         return None
 
     cell_gen = (find_smallest_cell(points, i) for i in range(len(points)))
@@ -285,7 +257,7 @@ def intersections_to_cells(intersections: T_intersections) -> List[T_bbox]:
 def cells_to_tables(cells: List[T_bbox]) -> List[List[T_bbox]]:
     def bbox_to_corners(bbox: T_bbox) -> Tuple[T_point, T_point, T_point, T_point]:
         x0, top, x1, bottom = bbox
-        return ((x0, top), (x0, bottom), (x1, top), (x1, bottom))
+        return (x0, top), (x0, bottom), (x1, top), (x1, bottom)
 
     remaining = list(cells)
 
@@ -448,21 +420,6 @@ class TableSettings:
     text_settings: Optional[Dict[str, Any]] = None
 
     def __post_init__(self) -> "TableSettings":
-        """Clean up user-provided table settings.
-
-        Validates that the table settings provided consists of acceptable values and
-        returns a cleaned up version. The cleaned up version fills out the missing
-        values with the default values in the provided settings.
-
-        TODO: Can be further used to validate that the values are of the correct
-            type. For example, raising a value error when a non-boolean input is
-            provided for the key ``keep_blank_chars``.
-
-        :param table_settings: User-provided table settings.
-        :returns: A cleaned up version of the user-provided table settings.
-        :raises ValueError: When an unrecognised key is provided.
-        """
-
         for setting in NON_NEGATIVE_SETTINGS:
             if (getattr(self, setting) or 0) < 0:
                 raise ValueError(f"Table setting '{setting}' cannot be negative")
@@ -536,7 +493,7 @@ class TableFinder(object):
             Table(self.page, cell_group) for cell_group in cells_to_tables(self.cells)
         ]
 
-    def get_edges(self) -> T_obj_list:
+    def get_edges(self) -> List_T_obj:
         settings = self.settings
 
         for orientation in ["vertical", "horizontal"]:
