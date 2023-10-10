@@ -28,12 +28,10 @@ class PDF(Container):
     def __init__(
             self,
             stream: Union[BufferedReader, BytesIO],
-            stream_is_external: bool = False,
             pages: Optional[Union[List[int], Tuple[int]]] = None,
             password: Optional[str] = None,
     ):
         self.stream = stream
-        self.stream_is_external = stream_is_external
         self.pages_to_parse = pages
         self.password = password
 
@@ -57,22 +55,17 @@ class PDF(Container):
         stream: Union[str, pathlib.Path, BufferedReader, BytesIO]
         if isinstance(path_or_fp, (str, pathlib.Path)):
             stream = open(path_or_fp, "rb")
-            stream_is_external = False
         else:
             stream = path_or_fp
-            stream_is_external = True
 
         try:
             return cls(
                 stream,
                 pages=pages,
                 password=password,
-                stream_is_external=stream_is_external,
             )
 
         except PSException:
-            if not stream_is_external:
-                stream.close()
             raise
 
     def close(self) -> None:

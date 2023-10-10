@@ -1,7 +1,6 @@
 from typing import Any, List, Optional, Union
 
 from pdfminer.pdftypes import PDFObjRef
-from pdfminer.psparser import PSLiteral
 
 
 def resolve_and_decode(obj: Any) -> Any:

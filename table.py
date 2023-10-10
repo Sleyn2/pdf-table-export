@@ -324,9 +324,18 @@ class Table(object):
             max(map(itemgetter(3), c)),
         )
 
+
+
     @property
     def rows(self) -> List[Row]:
+        def test(x):
+            return format(x, '0.3f')
+
+        def test2(x):
+            return tuple(map(test, x))
+
         _sorted = sorted(self.cells, key=itemgetter(1, 0))
+        # _sorted = sorted(list(map(test2, self.cells)), key=itemgetter(1, 0))
         xs = list(sorted(set(map(itemgetter(0), self.cells))))
         rows = []
         for y, row_cells in itertools.groupby(_sorted, itemgetter(1)):
